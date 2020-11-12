@@ -32,7 +32,6 @@ Haralick (Co-occurance matrix) features (Also texture):
 * Random Forest
 * Gradient Boosting Classifier
 
-
 ### Example Usage
 
 python train.py -i <path_to_image_folder> -l <path/to/label/folder> -c <SVM, RF, GBC> -o <path/to/model.p>
@@ -40,6 +39,13 @@ python train.py -i <path_to_image_folder> -l <path/to/label/folder> -c <SVM, RF,
 python inference.py -i <path_to_image_folder> -m <path/to/model.p> -o <path/to/output/folder>
 
 python evaluation.py -i <path/to/test/images> -g <path/to/ground/truth/images> [-m]
+
+### Example Usage (Hands)
+python3 train.py -i hands/images -l hands/labels -c SVM -o model.p
+
+python3 inference.py -i hands/images -m model.p -o hands/outputs
+
+python3 evaluation.py -i hands/outputs -g hands/labels
 
 ### Example Output
 
