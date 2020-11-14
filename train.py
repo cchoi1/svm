@@ -12,8 +12,6 @@ from sklearn import metrics
 from sklearn.model_selection import train_test_split
 import time
 import mahotas as mt
-from PIL import Image
-import torchvision.transforms as transforms
 
 def check_args(args):
 
@@ -50,9 +48,11 @@ def read_data(image_dir, label_dir):
 
     for file in filelist:
         img = cv2.imread(file, 1)
-        image_list.append(img[0:256, 42:298])
+        image_list.append(img)
+        #image_list.append(img[0:256, 42:298])
         lab = cv2.imread(os.path.join(label_dir, os.path.basename(file).split('.')[0]+'.png'), 0)
-        label_list.append(lab[0:256, 42:298])
+        label_list.append(lab)
+        #label_list.append(lab[0:256, 42:298])
 
     return image_list, label_list
 
