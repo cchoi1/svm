@@ -1,12 +1,11 @@
 import cv2
-import numpy as np
-import pylab as plt
 from glob import glob
 import argparse
 import os
 import pickle as pkl
 import train
 import math
+import time
 
 def check_args(args):
 
@@ -27,10 +26,9 @@ def parse_args():
     return check_args(args)
 
 def create_features(img):
-    #new_img = img[0:256, 0:img.shape[1]]]
-    print("IMG SHAPE INF1: ", img.shape)
-    img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
+    img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    cv2.waitKey(0)
     features, _ = train.create_features(img, img_gray, label=None, train=False)
 
     return features
@@ -38,14 +36,13 @@ def create_features(img):
 def compute_prediction(img, model):
 
     border = 5 # (haralick neighbourhood - 1) / 2
-    print("IMG SHAPE INF2: ", img.shape)
+
     img = cv2.copyMakeBorder(img, top=border, bottom=border, \
                                   left=border, right=border, \
                                   borderType = cv2.BORDER_CONSTANT, \
                                   value=[0, 0, 0])
 
     features = create_features(img)
-    print("FEATURES SHAPE INF2: ", features.shape)
     predictions = model.predict(features.reshape(-1, features.shape[1]))
     pred_size = int(math.sqrt(features.shape[0]))
     inference_img = predictions.reshape(pred_size, pred_size)
@@ -56,20 +53,19 @@ def infer_images(image_dir, model_path, output_dir):
 
     filelist = glob(os.path.join(image_dir,'*.jpg'))
 
-    print('[INFO] Running inference on %s test images' %len(filelist))
+    print ('[INFO] Running inference on %s test images' %len(filelist))
 
     model = pkl.load(open( model_path, "rb" ) )
 
     for file in filelist:
         print ('[INFO] Processing images:', os.path.basename(file))
-        test_img = cv2.imread(file, 1)
-        #test_img = test_img[0:256, 42:298]
-        inference_img = compute_prediction(test_img, model)
+        inference_img = compute_prediction(cv2.imread(file, 1), model)
         cv2.imwrite(os.path.join(output_dir, os.path.basename(file)), inference_img)
 
 def main(image_dir, model_path, output_dir):
-
+    start = time.time()
     infer_images(image_dir, model_path, output_dir)
+    print('Processing time:', time.time() - start)
 
 if __name__ == '__main__':
     args = parse_args()

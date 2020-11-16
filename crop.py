@@ -22,15 +22,13 @@ def crop_image(image_dir, save_dir, image_type, save_type):
         image_obj = Image.open(file)
         if m > n:
             shift = int((m-n)/2)
-            cropped_img = image_obj.crop((shift, 0, 256+shift, n))
-        elif m < n:
+            cropped_img = image_obj.crop((shift, 0, n+shift, n))
+        else:
             shift = int((n-m) / 2)
-            cropped_img = image_obj.crop((0, shift, m, 256+shift))
+            cropped_img = image_obj.crop((0, shift, m, m+shift))
         cropped_img.show()
-        print(file)
         temp = file.replace(image_dir, save_dir)
         temp2 = temp[:len(temp) - 4]
-        print(temp2)
         if save_type == 'jpg':
             save_location = temp2 + '.jpg'
         elif save_type == 'png':
@@ -39,9 +37,15 @@ def crop_image(image_dir, save_dir, image_type, save_type):
 
 
 if __name__ == '__main__':
-    #image_dir = 'hands/images'
-    #save_dir = 'hands/cropped_images'
+    #image_dir = 'pots/images'
+    #save_dir = 'pots/cropped_images'
     #crop_image(image_dir, save_dir, 'jpg', 'jpg')
-    image_dir = 'hands/labels'
-    save_dir = 'hands/cropped_labels'
-    crop_image(image_dir, save_dir, 'jpg', 'png')
+    #image_dir = 'pots/labels'
+    #save_dir = 'pots/cropped_labels'
+    #crop_image(image_dir, save_dir, 'png', 'png')
+    #image_dir = 'hands/test'
+    #save_dir = 'hands/cropped_test'
+    #crop_image(image_dir, save_dir, 'png', 'png')
+    image_dir = 'hands/test_ground_truth'
+    save_dir = 'hands/cropped_test_ground_truth'
+    crop_image(image_dir, save_dir, 'png', 'png')

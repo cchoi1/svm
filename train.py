@@ -40,19 +40,16 @@ def parse_args():
 
 def read_data(image_dir, label_dir):
 
-    print('[INFO] Reading image data.')
+    print ('[INFO] Reading image data.')
 
     filelist = glob(os.path.join(image_dir, '*.jpg'))
     image_list = []
     label_list = []
 
     for file in filelist:
-        img = cv2.imread(file, 1)
-        image_list.append(img)
-        #image_list.append(img[0:256, 42:298])
-        lab = cv2.imread(os.path.join(label_dir, os.path.basename(file).split('.')[0]+'.png'), 0)
-        label_list.append(lab)
-        #label_list.append(lab[0:256, 42:298])
+
+        image_list.append(cv2.imread(file, 1))
+        label_list.append(cv2.imread(os.path.join(label_dir, os.path.basename(file).split('.')[0]+'.png'), 0))
 
     return image_list, label_list
 
@@ -64,7 +61,7 @@ def subsample(features, labels, low, high, sample_size):
 
 def subsample_idx(low, high, sample_size):
 
-    return np.random.randint(low, high, sample_size)
+    return np.random.randint(low,high,sample_size)
 
 def calc_haralick(roi):
 
@@ -79,7 +76,7 @@ def calc_haralick(roi):
 
 def harlick_features(img, h_neigh, ss_idx):
 
-    print('[INFO] Computing haralick features.')
+    print ('[INFO] Computing haralick features.')
     size = h_neigh
     shape = (img.shape[0] - size + 1, img.shape[1] - size + 1, size, size)
     strides = 2 * img.strides
@@ -125,27 +122,24 @@ def create_features(img, img_gray, label, train=True):
     lbp_points = lbp_radius*8
     h_ind = int((h_neigh - 1)/ 2)
 
-    print("IMG SHAPE: ", img.shape)
     feature_img = np.zeros((img.shape[0],img.shape[1],4))
     feature_img[:,:,:3] = img
     img = None
-    print("IMG GRAY SHAPE: ", img_gray.shape)
     feature_img[:,:,3] = create_binary_pattern(img_gray, lbp_points, lbp_radius)
-    print("FEATURES SHAPE 1: ", feature_img.shape)
     feature_img = feature_img[h_ind:-h_ind, h_ind:-h_ind]
-    print("FEATURES SHAPE 2: ", feature_img.shape)
     features = feature_img.reshape(feature_img.shape[0]*feature_img.shape[1], feature_img.shape[2])
 
     if train == True:
-        print("SS_IDX UPPER BOUND: ", features.shape[0])
         ss_idx = subsample_idx(0, features.shape[0], num_examples)
         features = features[ss_idx]
     else:
         ss_idx = []
+
     h_features = harlick_features(img_gray, h_neigh, ss_idx)
     features = np.hstack((features, h_features))
 
     if train == True:
+
         label = label[h_ind:-h_ind, h_ind:-h_ind]
         labels = label.reshape(label.shape[0]*label.shape[1], 1)
         labels = labels[ss_idx]
@@ -162,8 +156,7 @@ def create_training_dataset(image_list, label_list):
     y = []
 
     for i, img in enumerate(image_list):
-        print("INIT IMG SHAPE: ", img.shape)
-        print("INIT LABEL SHAPE: ", label_list[i].shape)
+
         img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         features, labels = create_features(img, img_gray, label_list[i])
         X.append(features)
@@ -183,9 +176,9 @@ def create_training_dataset(image_list, label_list):
 def train_model(X, y, classifier):
 
     if classifier == "SVM":
-        from sklearn.svm import SVC
+        from sklearn.svm import LinearSVC
         print ('[INFO] Training Support Vector Machine model.')
-        model = SVC()
+        model = LinearSVC()
         model.fit(X, y)
     elif classifier == "RF":
         from sklearn.ensemble import RandomForestClassifier
