@@ -1,4 +1,4 @@
-# Machine Learning - Image Segmentation
+# Using an SVM to Perform Image Segmentation
 
 ### Supported Learners
 
