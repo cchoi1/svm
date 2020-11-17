@@ -1,27 +1,4 @@
 # Machine Learning - Image Segmentation
-### Feature vector
-
-Spectral:
-
-* Red
-* Green
-* Blue
-
-Texture:
-
-* Local binary pattern
-
-Haralick (Co-occurance matrix) features (Also texture):
-
-* Angular second moment
-* Contrast
-* Correlation
-* Sum of Square: variance
-* Inverse difference moment
-* Sum average
-* Sum variance
-* Sum entropy
-* Entropy
 
 ### Supported Learners
 
