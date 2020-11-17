@@ -1,7 +1,4 @@
 # Machine Learning - Image Segmentation
-
-Per pixel image segmentation using machine learning algorithms. Programmed using the following libraries: Scikit-Learn, Scikit-Image OpenCV, and Mahotas and ProgressBar. Compatible with Python 2.7+ and 3.X.
-
 ### Feature vector
 
 Spectral:
@@ -29,8 +26,6 @@ Haralick (Co-occurance matrix) features (Also texture):
 ### Supported Learners
 
 * Support Vector Machine
-* Random Forest
-* Gradient Boosting Classifier
 
 ### Example Usage
 python3 train.py -i hands/images -l hands/labels -c SVM -o model.p
@@ -42,3 +37,6 @@ python3 evaluation.py -i hands/outputs -g hands/labels
 ### Example Output
 
 ![Example Output](pots/image_small.png)
+
+### Source
+The project code base was taken from https://github.com/dgriffiths3/ml_segmentation and then modified to work for our final project needs. 
