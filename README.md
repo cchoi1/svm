@@ -36,7 +36,7 @@ python3 evaluation.py -i hands/outputs -g hands/labels
 
 ### Example Output
 
-![Example Output](pots/image_small.png)
+![Example Output](SampleInput.png)
 
 ### Source
 The project code base was taken from https://github.com/dgriffiths3/ml_segmentation and then modified to work for our final project needs. 
