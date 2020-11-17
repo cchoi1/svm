@@ -36,12 +36,10 @@ def create_features(img):
 def compute_prediction(img, model):
 
     border = 5 # (haralick neighbourhood - 1) / 2
-
     img = cv2.copyMakeBorder(img, top=border, bottom=border, \
                                   left=border, right=border, \
                                   borderType = cv2.BORDER_CONSTANT, \
                                   value=[0, 0, 0])
-
     features = create_features(img)
     predictions = model.predict(features.reshape(-1, features.shape[1]))
     pred_size = int(math.sqrt(features.shape[0]))

@@ -45,7 +45,6 @@ def read_data(image_dir, label_dir):
     filelist = glob(os.path.join(image_dir, '*.jpg'))
     image_list = []
     label_list = []
-
     for file in filelist:
 
         image_list.append(cv2.imread(file, 1))
@@ -176,9 +175,9 @@ def create_training_dataset(image_list, label_list):
 def train_model(X, y, classifier):
 
     if classifier == "SVM":
-        from sklearn.svm import LinearSVC
+        from sklearn.linear_model import SGDClassifier
         print ('[INFO] Training Support Vector Machine model.')
-        model = LinearSVC()
+        model = SGDClassifier()
         model.fit(X, y)
     elif classifier == "RF":
         from sklearn.ensemble import RandomForestClassifier
